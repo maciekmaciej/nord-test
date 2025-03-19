@@ -25,9 +25,10 @@ export const LoginForm = () => {
     setErrors(null)
     setServerError(null)
 
+    const formData = new FormData(event.currentTarget)
     const result = loginDTO.safeParse({
-      username: event.currentTarget.username.value,
-      password: event.currentTarget.password.value,
+      username: formData.get('username'),
+      password: formData.get('password'),
     })
 
     if (!result.success) {
