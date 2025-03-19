@@ -11,14 +11,30 @@ import {
 import { Input } from './ui/Input'
 import { InputLabel } from './ui/InputLabel'
 import { InputError } from './ui/InputError'
+import { useMutation } from '@tanstack/react-query'
 
 export const LoginForm = () => {
-  const { login } = useAuth()
   const navigate = useNavigate()
   const [errors, setErrors] = useState<z.inferFormattedError<
     typeof loginDTO
   > | null>(null)
   const [serverError, setServerError] = useState<string | null>(null)
+  const { login: loginMutationFn } = useAuth()
+  const { mutate: login, isPending } = useMutation({
+    mutationFn: loginMutationFn,
+    onSuccess: () => {
+      navigate('/dashboard')
+    },
+    onError: (error) => {
+      if (error instanceof AuthError) {
+        setServerError(error.message)
+
+        return
+      }
+
+      setServerError(DEFAULT_ERROR_MESSAGE)
+    },
+  })
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
@@ -37,18 +53,7 @@ export const LoginForm = () => {
       return
     }
 
-    try {
-      await login(result.data)
-      navigate('/dashboard')
-    } catch (error) {
-      if (error instanceof AuthError) {
-        setServerError(error.message)
-
-        return
-      }
-
-      setServerError(DEFAULT_ERROR_MESSAGE)
-    }
+    login(result.data)
   }
 
   return (
@@ -88,7 +93,9 @@ export const LoginForm = () => {
 
           {serverError && <InputError>{serverError}</InputError>}
 
-          <Button type='submit'>Login</Button>
+          <Button type='submit' disabled={isPending}>
+            {isPending ? 'Logging in...' : 'Login'}
+          </Button>
         </form>
       </div>
     </section>

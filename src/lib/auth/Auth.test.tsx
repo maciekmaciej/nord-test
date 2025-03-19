@@ -18,6 +18,7 @@ import { z } from 'zod'
 import { FC, PropsWithChildren } from 'react'
 import { DashboardLayout } from '../../components/DashboardLayout'
 import { useAuth } from './Auth.context'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 
 const TEST_CREDENTIALS = {
   username: 'testuser',
@@ -32,6 +33,9 @@ const server = setupServer(
     `${import.meta.env.VITE_API_URL}/tokens`,
     async ({ request }) => {
       const { username, password } = await request.json()
+
+      // Simulate a slow response to test loading state
+      await new Promise((resolve) => setTimeout(resolve))
 
       if (
         username === TEST_CREDENTIALS.username &&
@@ -49,10 +53,14 @@ beforeAll(() => server.listen())
 afterEach(() => server.resetHandlers())
 afterAll(() => server.close())
 
+const queryClient = new QueryClient()
+
 const TestWrapper: FC<PropsWithChildren> = ({ children }) => (
-  <BrowserRouter>
-    <AuthProvider>{children}</AuthProvider>
-  </BrowserRouter>
+  <QueryClientProvider client={queryClient}>
+    <BrowserRouter>
+      <AuthProvider>{children}</AuthProvider>
+    </BrowserRouter>
+  </QueryClientProvider>
 )
 
 describe('Authentication', () => {
@@ -124,6 +132,29 @@ describe('Authentication', () => {
 
       await waitFor(() => {
         expect(screen.getByText(ERROR_MESSAGE)).toBeInTheDocument()
+      })
+    })
+
+    it('should display loading state when logging in', async () => {
+      render(
+        <TestWrapper>
+          <LoginForm />
+        </TestWrapper>
+      )
+
+      const usernameInput = screen.getByLabelText(/username/i)
+      const passwordInput = screen.getByLabelText(/password/i)
+
+      await fireEvent.change(usernameInput, {
+        target: { value: TEST_CREDENTIALS.username },
+      })
+      await fireEvent.change(passwordInput, {
+        target: { value: TEST_CREDENTIALS.password },
+      })
+      await fireEvent.submit(usernameInput.closest('form')!)
+
+      await waitFor(() => {
+        expect(screen.getByText(/Logging in.../i)).toBeInTheDocument()
       })
     })
   })
