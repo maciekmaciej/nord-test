@@ -1,0 +1,11 @@
+@import 'tailwindcss';
+
+:root {
+  font-family: 'Inter', sans-serif;
+  color: var(--color-neutral-900);
+}
+
+@utility container {
+  margin-inline: auto;
+  padding-inline: calc(var(--spacing) * 4);
+}
