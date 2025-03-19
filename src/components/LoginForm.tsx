@@ -8,6 +8,9 @@ import {
   DEFAULT_ERROR_MESSAGE,
   loginDTO,
 } from '../lib/auth/Auth.constants'
+import { Input } from './ui/Input'
+import { InputLabel } from './ui/InputLabel'
+import { InputError } from './ui/InputError'
 
 export const LoginForm = () => {
   const { login } = useAuth()
@@ -57,56 +60,33 @@ export const LoginForm = () => {
 
         <form className='flex gap-4 mt-8 flex-col' onSubmit={handleSubmit}>
           <div className='flex flex-col gap-2'>
-            <label
-              htmlFor='string'
-              className='text-xs font-medium text-neutral-500 leading-none'
-            >
-              Username
-            </label>
-            <input
-              type='text'
-              name='username'
+            <InputLabel htmlFor='username'>Username</InputLabel>
+            <Input
               id='username'
+              name='username'
               placeholder='Enter your username'
-              className='h-9 rounded-md border border-neutral-200 px-3 py-2 text-base sm:text-sm placeholder:text-neutral-400 shadow shadow-neutral-100 outline-sky-500 ['
+              type='text'
             />
             {errors?.username?._errors.map((error, index) => (
-              <p
-                key={index}
-                className='text-red-500 text-xs rounded-md px-3 py-2 font-medium bg-red-50'
-              >
-                {error}
-              </p>
+              <InputError key={index}>{error}</InputError>
             ))}
           </div>
+
           <div className='flex flex-col gap-2'>
-            <label
-              htmlFor='password'
-              className='text-xs font-medium text-neutral-500 leading-none'
-            >
-              Password
-            </label>
-            <input
-              type='password'
-              name='password'
+            <InputLabel htmlFor='password'>Password</InputLabel>
+            <Input
               id='password'
+              name='password'
               placeholder='Enter your password'
-              className='h-9 rounded-md border border-neutral-200 px-3 py-2 text-base sm:text-sm placeholder:text-neutral-400 shadow shadow-neutral-100 outline-sky-500 ['
+              type='password'
             />
             {errors?.password?._errors.map((error, index) => (
-              <p
-                key={index}
-                className='text-red-500 text-xs rounded-md px-3 py-2 font-medium bg-red-50'
-              >
-                {error}
-              </p>
+              <InputError key={index}>{error}</InputError>
             ))}
           </div>
-          {serverError && (
-            <p className='text-red-500 text-xs rounded-md px-3 py-2 font-medium bg-red-50'>
-              {serverError}
-            </p>
-          )}
+
+          {serverError && <InputError>{serverError}</InputError>}
+
           <Button type='submit'>Login</Button>
         </form>
       </div>
