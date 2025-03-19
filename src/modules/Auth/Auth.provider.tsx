@@ -9,13 +9,13 @@ import {
 import {
   AUTH_TOKEN_STORAGE_KEY,
   AUTH_LOGIN_URL,
-  AuthError,
   DEFAULT_ERROR_MESSAGE,
 } from './Auth.constants'
 import { AuthContext } from './Auth.context'
 import { loginDTO } from './Auth.constants'
 import { z } from 'zod'
 import { LoginResponseType } from './Auth.types'
+import { AuthError } from './Auth.utils'
 
 export const AuthProvider: FC<PropsWithChildren> = ({ children }) => {
   const [accessToken, setAccessToken] = useState<string | null>(() =>
@@ -31,6 +31,7 @@ export const AuthProvider: FC<PropsWithChildren> = ({ children }) => {
   }, [accessToken])
 
   const isAuthorized = Boolean(accessToken)
+
   const login = useCallback(
     async (loginCredentials: z.infer<typeof loginDTO>) => {
       const response = await fetch(AUTH_LOGIN_URL, {
@@ -51,6 +52,7 @@ export const AuthProvider: FC<PropsWithChildren> = ({ children }) => {
     },
     []
   )
+
   const logout = useCallback(() => setAccessToken(null), [])
 
   const stateValue = useMemo(

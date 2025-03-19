@@ -1,7 +1,7 @@
 import { Navigate, Outlet } from 'react-router'
-import { useAuth } from '../lib/auth/Auth.context'
+import { useAuth } from './Auth.context'
 
-export const DashboardLayout = () => {
+export const ProtectedPageOutlet = () => {
   const { isAuthorized } = useAuth()
 
   if (!isAuthorized) {

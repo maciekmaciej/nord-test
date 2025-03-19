@@ -1,17 +1,14 @@
-import { Button } from './ui/Button'
+import { Button } from '../../components/ui/Button'
 import { useState } from 'react'
 import { z } from 'zod'
-import { useAuth } from '../lib/auth/Auth.context'
+import { useAuth } from './Auth.context'
 import { useNavigate } from 'react-router'
-import {
-  AuthError,
-  DEFAULT_ERROR_MESSAGE,
-  loginDTO,
-} from '../lib/auth/Auth.constants'
-import { Input } from './ui/Input'
-import { InputLabel } from './ui/InputLabel'
-import { InputError } from './ui/InputError'
+import { DEFAULT_ERROR_MESSAGE, loginDTO } from './Auth.constants'
+import { Input } from '../../components/ui/Input'
+import { InputLabel } from '../../components/ui/InputLabel'
+import { InputError } from '../../components/ui/InputError'
 import { useMutation } from '@tanstack/react-query'
+import { AuthError } from './Auth.utils'
 
 export const LoginForm = () => {
   const navigate = useNavigate()

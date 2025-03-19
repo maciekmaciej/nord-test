@@ -1,7 +1,7 @@
 import { NavLink } from 'react-router'
 import { cn } from '../lib/utils'
 import { Button } from './ui/Button'
-import { useAuth } from '../lib/auth/Auth.context'
+import { useAuth } from '../modules/Auth/Auth.context'
 
 const NAV_ITEMS = [{ label: 'Servers', to: '/servers' }]
 

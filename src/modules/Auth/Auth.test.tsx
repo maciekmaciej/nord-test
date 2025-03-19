@@ -9,14 +9,14 @@ import {
   beforeAll,
 } from 'vitest'
 import { AuthProvider } from './Auth.provider'
-import { LoginForm } from '../../components/LoginForm'
+import { LoginForm } from './LoginForm'
 import { BrowserRouter, Route, Routes, MemoryRouter } from 'react-router'
 import { AUTH_TOKEN_STORAGE_KEY, loginDTO } from './Auth.constants'
 import { http, HttpResponse } from 'msw'
 import { setupServer } from 'msw/node'
 import { z } from 'zod'
 import { FC, PropsWithChildren } from 'react'
-import { DashboardLayout } from '../../components/DashboardLayout'
+import { ProtectedPageOutlet } from './ProtectedPageOutlet'
 import { useAuth } from './Auth.context'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 
@@ -165,7 +165,7 @@ describe('Authentication', () => {
         <MemoryRouter initialEntries={['/']}>
           <AuthProvider>
             <Routes>
-              <Route path='/' element={<DashboardLayout />} />
+              <Route path='/' element={<ProtectedPageOutlet />} />
               <Route path='/login' element={<div data-testid='login-page' />} />
             </Routes>
           </AuthProvider>
@@ -182,7 +182,7 @@ describe('Authentication', () => {
         <MemoryRouter initialEntries={['/']}>
           <AuthProvider>
             <Routes>
-              <Route path='/' element={<DashboardLayout />}>
+              <Route path='/' element={<ProtectedPageOutlet />}>
                 <Route
                   index
                   element={<div data-testid='dashboard-content' />}
