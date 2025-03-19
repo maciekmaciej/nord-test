@@ -7,38 +7,38 @@ import {
   useState,
 } from 'react'
 import {
-  AUTH_TOKEN_KEY,
-  AUTH_URL,
+  AUTH_TOKEN_STORAGE_KEY,
+  AUTH_LOGIN_URL,
   AuthError,
   DEFAULT_ERROR_MESSAGE,
 } from './Auth.constants'
 import { AuthContext } from './Auth.context'
 import { loginDTO } from './Auth.constants'
 import { z } from 'zod'
-import { AuthResponseType } from './Auth.types'
+import { LoginResponseType } from './Auth.types'
 
 export const AuthProvider: FC<PropsWithChildren> = ({ children }) => {
   const [accessToken, setAccessToken] = useState<string | null>(() =>
-    localStorage.getItem(AUTH_TOKEN_KEY)
+    localStorage.getItem(AUTH_TOKEN_STORAGE_KEY)
   )
 
   useEffect(() => {
     if (accessToken) {
-      localStorage.setItem(AUTH_TOKEN_KEY, accessToken)
+      localStorage.setItem(AUTH_TOKEN_STORAGE_KEY, accessToken)
     } else {
-      localStorage.removeItem(AUTH_TOKEN_KEY)
+      localStorage.removeItem(AUTH_TOKEN_STORAGE_KEY)
     }
   }, [accessToken])
 
   const isAuthorized = Boolean(accessToken)
   const login = useCallback(
     async (loginCredentials: z.infer<typeof loginDTO>) => {
-      const response = await fetch(AUTH_URL, {
+      const response = await fetch(AUTH_LOGIN_URL, {
         method: 'POST',
         body: JSON.stringify(loginCredentials),
         headers: { 'Content-Type': 'application/json' },
       })
-      const data: AuthResponseType = await response.json()
+      const data: LoginResponseType = await response.json()
 
       if (!response.ok || 'message' in data) {
         const errorMessage =

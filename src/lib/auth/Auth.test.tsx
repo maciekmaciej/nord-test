@@ -11,7 +11,7 @@ import {
 import { AuthProvider } from './Auth.provider'
 import { LoginForm } from '../../components/LoginForm'
 import { BrowserRouter, Route, Routes, MemoryRouter } from 'react-router'
-import { AUTH_TOKEN_KEY, loginDTO } from './Auth.constants'
+import { AUTH_TOKEN_STORAGE_KEY, loginDTO } from './Auth.constants'
 import { http, HttpResponse } from 'msw'
 import { setupServer } from 'msw/node'
 import { z } from 'zod'
@@ -100,7 +100,7 @@ describe('Authentication', () => {
       await fireEvent.submit(usernameInput.closest('form')!)
 
       await waitFor(() => {
-        expect(localStorage.getItem(AUTH_TOKEN_KEY)).toBe(TEST_TOKEN)
+        expect(localStorage.getItem(AUTH_TOKEN_STORAGE_KEY)).toBe(TEST_TOKEN)
       })
     })
 
@@ -145,7 +145,7 @@ describe('Authentication', () => {
     })
 
     it('should allow access to protected route when authenticated', () => {
-      localStorage.setItem(AUTH_TOKEN_KEY, TEST_TOKEN)
+      localStorage.setItem(AUTH_TOKEN_STORAGE_KEY, TEST_TOKEN)
 
       render(
         <MemoryRouter initialEntries={['/']}>
@@ -168,7 +168,7 @@ describe('Authentication', () => {
 
   describe('Logout', () => {
     it('should handle logout correctly', () => {
-      localStorage.setItem(AUTH_TOKEN_KEY, TEST_TOKEN)
+      localStorage.setItem(AUTH_TOKEN_STORAGE_KEY, TEST_TOKEN)
 
       const TestComponent = () => {
         const { logout } = useAuth()
@@ -183,7 +183,7 @@ describe('Authentication', () => {
 
       fireEvent.click(screen.getByText('Logout'))
 
-      expect(localStorage.getItem(AUTH_TOKEN_KEY)).toBeNull()
+      expect(localStorage.getItem(AUTH_TOKEN_STORAGE_KEY)).toBeNull()
     })
   })
 })
