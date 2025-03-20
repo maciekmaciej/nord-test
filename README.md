@@ -1,54 +1,100 @@
-# React + TypeScript + Vite
+# 📚 Nord Security Homework
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A React TypeScript application with login, logout and servers list page.
 
-Currently, two official plugins are available:
+## Tech Stack
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- React
+- TypeScript
+- Vite
+- Tailwind
+- React Query
+- React Router
+- Vitest
+- MSW (API mocking)
+- ESLint
 
-## Expanding the ESLint configuration
+## Features
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+- Responsive design with Tailwind
+- Authentication system with login form, logout and protected routes
+- Sortable table with server list
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+## Future Enhancements
+
+### User Experience
+
+- Enhance data visualization with interactive charts and country flags
+- Implement loading state indicators and skeleton screens for better feedback
+- Add more interactive elements for better user engagement
+
+### Security & Authentication
+
+- Implement JWT-based authentication with access and refresh token mechanism
+- Expand test coverage with integration and end-to-end tests
+
+### Performance Optimization
+
+- Implement pagination for efficient data loading
+- Self-host fonts to reduce external dependencies
+- Add client-side caching strategies
+
+## Project Structure
+
+- `/src` - Source code
+  - `/components` - React components
+  - `/components/ui` - Design system components
+  - `/modules` - Feature-based modules (e.g., Auth)
+  - `/lib` - Utility functions and constants
+  - `/styles` - Global styles and Tailwind CSS configuration
+
+## Environment Variables
+
+Create a `.env` file in the root directory with the following variables:
+
+```env
+VITE_API_URL=your_api_url_here
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## Installation
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+```bash
+pnpm install
+```
 
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
+## Development
+
+To start the development server:
+
+```bash
+pnpm dev
+```
+
+This will start the development server at `http://localhost:5173` (or another available port if 5173 is in use).
+
+## Testing
+
+The project uses Vitest and React Testing Library for testing. To run tests:
+
+```bash
+pnpm test
+```
+
+## Building for Production
+
+To create a production build:
+
+```bash
+pnpm build
+```
+
+This will:
+
+1. Run TypeScript compilation
+2. Create an optimized production build in the `dist` directory
+
+To preview the production build locally:
+
+```bash
+pnpm preview
 ```
