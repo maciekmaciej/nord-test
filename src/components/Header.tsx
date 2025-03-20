@@ -3,7 +3,7 @@ import { cn } from '../lib/utils'
 import { Button } from './ui/Button'
 import { useAuth } from '../modules/Auth/Auth.context'
 
-const NAV_ITEMS = [{ label: 'Servers', to: '/servers' }]
+const NAV_ITEMS = [{ label: 'Servers', to: '/dashboard' }]
 
 export const Header = () => {
   const { isAuthorized, logout } = useAuth()
