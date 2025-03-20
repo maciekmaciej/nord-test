@@ -48,7 +48,10 @@ export const ServersTable = () => {
       <table className='w-full text-sm'>
         <thead className='bg-neutral-50'>
           <tr className='border-b border-neutral-200'>
-            <th className='w-[60%] text-left'>
+            <th
+              className='w-[60%] text-left'
+              aria-sort={getAriaSort(sortBy, 'name', order)}
+            >
               <button
                 data-testid='sort-by-name'
                 onClick={() => handleSort('name')}
@@ -56,7 +59,6 @@ export const ServersTable = () => {
                   'flex px-6 py-3 w-full items-center gap-1 font-medium cursor-pointer text-neutral-900 hover:text-neutral-700 flex-wrap hover:bg-neutral-100 duration-200 transition-colors',
                   sortBy === 'name' && 'font-bold'
                 )}
-                aria-sort={getAriaSort(sortBy, 'name', order)}
                 aria-label={`Sort by location ${
                   sortBy === 'name'
                     ? order === 'asc'
@@ -85,7 +87,7 @@ export const ServersTable = () => {
                 )}
               </button>
             </th>
-            <th>
+            <th aria-sort={getAriaSort(sortBy, 'distance', order)}>
               <button
                 data-testid='sort-by-distance'
                 onClick={() => handleSort('distance')}
@@ -93,7 +95,6 @@ export const ServersTable = () => {
                   'flex w-full px-6 py-3 items-center gap-1 font-medium cursor-pointer text-neutral-900 hover:text-neutral-700 hover:bg-neutral-100 duration-200 transition-colors flex-wrap',
                   sortBy === 'distance' && 'font-bold'
                 )}
-                aria-sort={getAriaSort(sortBy, 'distance', order)}
                 aria-label={`Sort by distance ${
                   sortBy === 'distance'
                     ? order === 'asc'
