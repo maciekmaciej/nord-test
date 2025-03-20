@@ -3,13 +3,10 @@ import { useSearchParams } from 'react-router'
 import { ArrowIcon } from '../../components/ui/ArrowIcon'
 import { API_URL } from '../../lib/constants'
 import { useQuery } from '@tanstack/react-query'
-import { Server } from './Servers.types'
-import { getSortedServers } from './Servers.utils'
+import { Order, Server, SortField } from './Servers.types'
+import { getAriaSort, getSortedServers } from './Servers.utils'
 import { fetchWithAuth } from '../Auth/Auth.utils'
 import { Button } from '../../components/ui/Button'
-
-type SortField = keyof Server
-type Order = 'asc' | 'desc'
 
 export const ServersTable = () => {
   const { data, isError, isLoading, refetch } = useQuery({
@@ -45,6 +42,8 @@ export const ServersTable = () => {
     <div
       className='rounded-lg border border-neutral-200 overflow-hidden'
       data-testid='servers-table'
+      role='region'
+      aria-label='Servers list'
     >
       <table className='w-full text-sm'>
         <thead className='bg-neutral-50'>
@@ -57,6 +56,14 @@ export const ServersTable = () => {
                   'flex px-6 py-3 w-full items-center gap-1 font-medium cursor-pointer text-neutral-900 hover:text-neutral-700 flex-wrap hover:bg-neutral-100 duration-200 transition-colors',
                   sortBy === 'name' && 'font-bold'
                 )}
+                aria-sort={getAriaSort(sortBy, 'name', order)}
+                aria-label={`Sort by location ${
+                  sortBy === 'name'
+                    ? order === 'asc'
+                      ? '(sorted A to Z)'
+                      : '(sorted Z to A)'
+                    : ''
+                }`}
               >
                 Location
                 {sortBy === 'name' && (
@@ -66,8 +73,12 @@ export const ServersTable = () => {
                         'size-4',
                         sortBy === 'name' && order === 'desc' && 'rotate-180'
                       )}
+                      aria-hidden='true'
                     />
-                    <span className='text-xs text-neutral-500 hidden sm:block'>
+                    <span
+                      className='text-xs text-neutral-500 hidden sm:block'
+                      aria-hidden='true'
+                    >
                       ({order === 'asc' ? 'A-Z' : 'Z-A'})
                     </span>
                   </>
@@ -82,6 +93,14 @@ export const ServersTable = () => {
                   'flex w-full px-6 py-3 items-center gap-1 font-medium cursor-pointer text-neutral-900 hover:text-neutral-700 hover:bg-neutral-100 duration-200 transition-colors flex-wrap',
                   sortBy === 'distance' && 'font-bold'
                 )}
+                aria-sort={getAriaSort(sortBy, 'distance', order)}
+                aria-label={`Sort by distance ${
+                  sortBy === 'distance'
+                    ? order === 'asc'
+                      ? '(sorted low to high)'
+                      : '(sorted high to low)'
+                    : ''
+                }`}
               >
                 Distance
                 {sortBy === 'distance' && (
@@ -93,8 +112,12 @@ export const ServersTable = () => {
                           order === 'desc' &&
                           'rotate-180'
                       )}
+                      aria-hidden='true'
                     />
-                    <span className='text-xs text-neutral-500 hidden sm:block'>
+                    <span
+                      className='text-xs text-neutral-500 hidden sm:block'
+                      aria-hidden='true'
+                    >
                       ({order === 'asc' ? 'Low-High' : 'High-Low'})
                     </span>
                   </>

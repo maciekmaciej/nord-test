@@ -1,4 +1,4 @@
-import { Server } from './Servers.types'
+import { Order, Server, SortField } from './Servers.types'
 
 export const getSortedServers = (
   servers: Server[],
@@ -26,4 +26,16 @@ export const getSortedServers = (
       return (a.distance - b.distance) * dir
     }
   })
+}
+
+export const getAriaSort = (
+  sortBy: SortField | null,
+  currentField: SortField,
+  order: Order | null
+): 'none' | 'ascending' | 'descending' => {
+  if (sortBy !== currentField) {
+    return 'none'
+  }
+
+  return order === 'asc' ? 'ascending' : 'descending'
 }
