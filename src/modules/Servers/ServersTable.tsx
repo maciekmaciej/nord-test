@@ -6,12 +6,13 @@ import { useQuery } from '@tanstack/react-query'
 import { Server } from './Servers.types'
 import { getSortedServers } from './Servers.utils'
 import { fetchWithAuth } from '../Auth/Auth.utils'
+import { Button } from '../../components/ui/Button'
 
 type SortField = keyof Server
 type Order = 'asc' | 'desc'
 
 export const ServersTable = () => {
-  const { data, isLoading } = useQuery({
+  const { data, isError, isLoading, refetch } = useQuery({
     queryKey: ['servers'],
     queryFn: () => fetchWithAuth<Server[]>(`${API_URL}/servers`),
   })
@@ -106,10 +107,22 @@ export const ServersTable = () => {
           className='divide-y divide-neutral-200 bg-white'
           data-testid='servers-list'
         >
+          {isError && (
+            <tr>
+              <td colSpan={2} className='px-6 py-4' data-testid='error-state'>
+                <div className='flex flex-col items-center justify-center gap-2 min-h-[200px]'>
+                  Error loading servers
+                  <Button onClick={() => refetch()}>Retry</Button>
+                </div>
+              </td>
+            </tr>
+          )}
           {isLoading ? (
             <tr>
               <td colSpan={2} className='px-6 py-4' data-testid='loading-state'>
-                Loading...
+                <div className='flex flex-col items-center justify-center gap-2 min-h-[200px]'>
+                  Loading...
+                </div>
               </td>
             </tr>
           ) : (

@@ -225,8 +225,27 @@ describe('ServersTable', () => {
 
     await waitFor(() => {
       expect(screen.queryByTestId('loading-state')).not.toBeInTheDocument()
+      expect(screen.getByTestId('error-state')).toBeInTheDocument()
+      expect(screen.getByText('Error loading servers')).toBeInTheDocument()
+    })
+
+    server.use(
+      http.get(`${API_URL}/servers`, () => {
+        return HttpResponse.json(TEST_SERVERS)
+      })
+    )
+
+    fireEvent.click(screen.getByRole('button', { name: 'Retry' }))
+
+    await waitFor(() => {
+      expect(screen.queryByTestId('loading-state')).not.toBeInTheDocument()
+      expect(screen.queryByTestId('error-state')).not.toBeInTheDocument()
+
       const serversList = screen.getByTestId('servers-list')
-      expect(serversList.querySelectorAll('tr')).toHaveLength(0)
+      const rows = serversList.querySelectorAll('tr')
+      expect(rows).toHaveLength(TEST_SERVERS.length)
+      expect(screen.queryByTestId('error-state')).not.toBeInTheDocument()
+      expect(screen.queryByTestId('loading-state')).not.toBeInTheDocument()
     })
   })
 })
